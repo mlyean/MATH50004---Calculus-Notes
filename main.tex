@@ -1,0 +1,549 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{thmtools}
+\usepackage{amssymb}
+\usepackage{commath}
+\usepackage{enumitem}
+
+\newtheorem*{thm}{Theorem}
+\newtheorem*{lem}{Lemma}
+\newtheorem*{cor}{Corollary}
+\theoremstyle{definition}
+\newtheorem*{eg}{Example}
+\theoremstyle{definition}
+\newtheorem*{defn}{Definition}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\newcommand{\veca}{\mathbf{a}}
+\newcommand{\vecb}{\mathbf{b}}
+\newcommand{\vecc}{\mathbf{c}}
+\newcommand{\vecr}{\mathbf{r}}
+\newcommand{\vecA}{\mathbf{A}}
+\newcommand{\vecB}{\mathbf{B}}
+\newcommand{\vecF}{\mathbf{F}}
+
+\newcommand{\bhat}[1]{\mathbf{\hat{#1}}}
+
+\DeclareMathSymbol{\ii}{\mathalpha}{letters}{"10}
+\DeclareMathSymbol{\jj}{\mathalpha}{letters}{"11}
+
+\newcommand{\ihat}{\bhat{\ii}}
+\newcommand{\jhat}{\bhat{\jj}}
+\newcommand{\khat}{\bhat{k}}
+\newcommand{\nhat}{\bhat{n}}
+
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+\DeclareMathOperator{\vdiv}{div}
+\DeclareMathOperator{\vcurl}{curl}
+
+\title{MATH50004 -- Multivariable Calculus Notes}
+\author{Ming Yean Lim}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Vectors}
+
+\subsection{Einstein Summation Convention}
+
+When there is a repeated suffix, it is assumed to be summed over, e.g. $a_i x_i$ is shorthand for $\sum_{i=1}^{3} a_i x_i$.
+
+\subsection{Kronecker Delta}
+
+\begin{equation*}
+    \delta_{ij} =
+        \begin{cases}
+            1 & \text{if } i = j \\
+            0 & \text{otherwise}
+        \end{cases}
+\end{equation*}
+
+\subsection{Permutation Symbol}
+
+\begin{equation*}
+    \varepsilon_{ijk} =
+        \begin{cases}
+            0  & \text{if any two of } i, j, k \text{ are equal} \\
+            1  & \text{if } i, j, k \text{ is a cyclic permutation of } 1, 2, 3 \\
+            -1 & \text{if } i, j, k \text{ is an acyclic permutation of } 1, 2, 3 \\
+        \end{cases}
+\end{equation*}
+
+We have the following relation:
+\begin{equation*}
+    \varepsilon_{ijk} \varepsilon_{klm} = \delta_{il} \delta_{jm} - \delta_{im} \delta_{jl}
+\end{equation*}
+
+\subsection{Vector Product}
+
+\begin{gather*}
+    \veca \times \vecb = \varepsilon_{ijk} \bhat{e}_i a_j b_k \\
+    [\veca \times \vecb]_i = \varepsilon_{ijk} a_j b_k
+\end{gather*}
+
+\subsection{Scalar Product}
+
+\begin{equation*}
+    \veca \cdot \vecb = a_i b_i
+\end{equation*}
+
+\subsection{Triple Scalar Product}
+
+\begin{defn}
+    The \emph{triple scalar product} of $\veca, \vecb, \vecc$ is given by $\veca \cdot (\vecb \times \vecc)$.
+\end{defn}
+Using the summation convention, we have
+\begin{equation*}
+    \veca \cdot (\vecb \times \vecc)
+    = a_i [\vecb \times \vecc]_i
+    = a_i \varepsilon_{ijk} b_j c_k
+    = \varepsilon_{ijk} a_i b_j c_k
+\end{equation*}
+
+\begin{thm}
+We have the identity
+\begin{equation*}
+    \veca \cdot (\vecb \times \vecc) = (\veca \times \vecb) \cdot \vecc
+\end{equation*}
+\end{thm}
+
+\subsection{Triple Vector Product}
+
+\begin{defn}
+    The triple vector product of $\veca, \vecb, \vecc$ is given by $\veca \times (\vecb \times \vecc)$.
+\end{defn}
+
+\begin{thm}
+We have the identity
+\begin{equation*}
+    \veca \times (\vecb \times \vecc) = (\veca \cdot \vecc) \vecb - (\veca \cdot \vecb) \vecc
+\end{equation*}
+In particular, the triple vector product lies in the plane of $\vecb$ and $\vecc$.
+\end{thm}
+
+\section{Gradient}
+
+\subsection{Cartesian Components of $\nabla \phi$}
+
+\begin{defn}
+Let $\phi$ be a differentiable scalar function in three dimensions. The \emph{gradient} of $\phi$ is
+\begin{equation*}
+    \nabla \phi = \frac{\partial \phi}{\partial x} \ihat + \frac{\partial \phi}{\partial y} \jhat + \frac{\partial \phi}{\partial z} \khat
+\end{equation*}
+The \emph{directional derivative} of $\phi$ in the direction $\bhat{s}$ is
+\begin{equation*}
+    \frac{\partial\phi}{\partial \mathbf{s}} = \bhat{s} \cdot \nabla \phi
+\end{equation*}
+\end{defn}
+
+\subsection{Cylindrical Components of $\nabla \phi$}
+
+\begin{equation*}
+    \nabla \phi = \bhat{r} \frac{\partial \phi}{\partial r} + \frac{\hat{\theta}}{r} \frac{\partial \phi}{\partial \theta} + \khat \frac{\partial \phi}{\partial z}
+\end{equation*}
+
+\subsection{Equation of Tangent Plane}
+
+\begin{gather*}
+    (\mathbf{r} - \mathbf{r}_P) \cdot (\nabla \phi)_P = 0 \\
+    \left(\frac{\partial \phi}{\partial x}\right)_P (x - x_P) + \left(\frac{\partial \phi}{\partial y}\right)_P (y - y_P) + \left(\frac{\partial \phi}{\partial z}\right)_P (z - z_P) = 0
+\end{gather*}
+
+\section{Divergence and Curl}
+
+\begin{defn}
+Let $\vecA$ be a vector function in three dimensions. The \emph{divergence} of $\vecA$ is
+\begin{equation*}
+    \vdiv \vecA = \nabla \cdot \vecA
+\end{equation*}
+The \emph{curl} of $\vecA$ is
+\begin{equation*}
+    \vcurl \vecA = \nabla \times \vecA
+\end{equation*}
+\end{defn}
+
+\section{Operations with the Gradient Operator}
+
+\subsection{Sum and Product Formulae}
+
+\begin{enumerate}
+    \item $\nabla (\phi_1 + \phi_2) = \nabla \phi_1 + \nabla \phi_2$
+    \item $\vdiv (\vecA + \vecB) = \vdiv \vecA + \vdiv \vecB$
+    \item $\vcurl (\vecA + \vecB) = \vcurl \vecA + \vcurl \vecB$
+    \item $\nabla (\phi \psi) = (\nabla \phi) \psi + \phi (\nabla \psi)$
+    \item $\vdiv (\phi \vecA) = \nabla \phi \cdot \vecA + \phi \vdiv \vecA$
+    \item $\vcurl (\phi \vecA) = \nabla \phi \times \vecA + \phi \vcurl \vecA$
+    \item $\vdiv (\vecA \times \vecB) = \vcurl \vecA \cdot \vecB - \vecA \cdot \vcurl \vecB$
+    \item $\vcurl (\vecA \times \vecB) = (\vecB \cdot \nabla) \vecA - \vecB \vdiv \vecA - (\vecA \cdot \nabla) \vecB + \vecA \vdiv \vecB$
+    \item $\nabla (\vecA \cdot \vecB) = (\vecB \cdot \nabla) \vecA + (\vecA \cdot \nabla) \vecB + \vecB \times \vcurl \vecA + \vecA \times \vcurl \vecB$
+\end{enumerate}
+
+\subsection{Laplacian}
+
+\begin{equation*}
+    \nabla^2 \phi = \frac{\partial^2 \phi}{\partial x^2} + \frac{\partial^2 \phi}{\partial y^2} + \frac{\partial^2 \phi}{\partial z^2} = \frac{\partial^2 \phi}{\partial x_i^2}
+\end{equation*}
+
+The equation $\nabla^2 \phi = 0$ is known as \emph{Laplace's equation}.
+
+\subsection{Curl of Gradient is Zero}
+
+\begin{equation*}
+    \vcurl (\nabla \phi) = 0
+\end{equation*}
+i.e. $\nabla \phi$ is irrotational.
+
+\subsection{Divergence of Curl is Zero}
+
+\begin{equation*}
+    \vdiv (\vcurl \vecA) = 0
+\end{equation*}
+i.e. $\vcurl \vecA$ is solenoidal.
+
+\subsection{Curl of Curl}
+
+\begin{equation*}
+    \vcurl (\vcurl \vecA) = \nabla (\vdiv \vecA) - \nabla^2 \vecA
+\end{equation*}
+
+\subsection{Scalar and Vector Fields}
+
+\begin{defn}
+    $\vecA$ is \emph{irrotational} if $\vcurl \vecA = \mathbf{0}$.
+\end{defn}
+
+\begin{defn}
+    $\vecA$ is \emph{solenoidal} if $\vdiv \vecA = \mathbf{0}$.
+\end{defn}
+
+\section{Path Integrals}
+
+\subsection{Path Element}
+
+\begin{equation*}
+    \mathrm{d}\mathbf{r} = \ihat\,\mathrm{d}x + \jhat\,\mathrm{d}y + \khat\,\mathrm{d}z
+\end{equation*}
+
+\subsection{Conservative Forces}
+
+If $\vecF = \nabla \phi$, then $\int_\gamma \vecF \cdot \mathrm{d}\mathbf{r} = \phi(B) - \phi(A)$ where $\gamma$ is a path from $A$ to $B$.
+
+\section{Surface Integrals}
+
+\subsection{Projection Theorem}
+
+\begin{thm} Let $\Sigma$ be the projection of $S$ onto the $x$--$y$ plane. Let $\nhat$ denote the normal to the surface $S$ at $P$. Then
+\begin{equation*}
+    \int_S f(P) \mathrm{d}S = \int_\Sigma f(P) \frac{\mathrm{d}x \, \mathrm{d}y}{\lvert \nhat \cdot \khat \rvert}
+\end{equation*}
+\end{thm}
+
+\section{Volume Integrals}
+
+\subsection{Volume Element}
+
+\begin{equation*}
+    \mathrm{d}\tau = \mathrm{d}x\,\mathrm{d}y\,\mathrm{d}z
+\end{equation*}
+
+\section{Relating Line, Surface, and Volume Integrals}
+
+\subsection{Green's Theorem}
+
+\begin{thm}[Green's Theorem]
+Suppose $R$ is a closed plane region bounded by a simple closed curve in the $x$--$y$ plane. Then
+\begin{equation*}
+    \oint_C (L \mathrm{d}x + M \mathrm{d}y) = \int_R \left(\frac{\partial M}{\partial x} - \frac{\partial L}{\partial y}\right) \mathrm{d}x\,\mathrm{d}y
+\end{equation*}
+\end{thm}
+
+\begin{thm}[2D Stokes' Theorem]
+Suppose $R$ is a closed plane region bounded by a simple closed curve in the $x$--$y$ plane. Then
+\begin{equation*}
+    \oint_C \vecF \cdot \mathrm{d}\mathbf{r} = \int_R \vcurl \vecF \cdot \mathrm{d} \mathbf{S}
+\end{equation*}
+where $\mathrm{d} \mathbf{S} = \khat \,\mathrm{d}S = \khat \,\mathrm{d}x\,\mathrm{d}y$.
+\end{thm}
+
+\begin{thm}[2D Divergence Theorem]
+Suppose $R$ is a closed plane region bounded by a simple closed curve in the $x$--$y$ plane. Then
+\begin{equation*}
+    \int_R \vdiv \vecF \,\mathrm{d}x\,\mathrm{d}y = \oint_C \vecF \cdot \nhat \,\mathrm{d}s
+\end{equation*}
+where $\nhat$ is the unit normal to $C$ ($\nhat$ points outwards when $C$ is traversed anticlockwise).
+\end{thm}
+
+\begin{eg}
+The area enclosed by a simple closed curve with boundary $C$ can by calculated by
+\begin{equation*}
+    \frac{1}{2} \oint_C x \,\mathrm{d}y - y \,\mathrm{d}x
+\end{equation*}
+\end{eg}
+
+\subsection{Divergence Theorem}
+
+\begin{thm}[Divergence Theorem]
+Suppose $\tau$ is a volume enclosed by a closed surface $S$ with unit outward normal $\nhat$. Then
+\begin{equation*}
+    \int_S \vecA \cdot \nhat \,\mathrm{d}S = \int_\tau \vdiv \vecA \,\mathrm{d}\tau
+\end{equation*}
+\end{thm}
+
+\subsection{Stokes Theorem}
+
+\begin{thm}
+Suppose $S$ is an open surface with a simple closed curve $\gamma$ forming its boundary. Then
+\begin{equation*}
+    \oint_\gamma \vecA \cdot \mathrm{d}\vecr = \int_S \vcurl \vecA \cdot \nhat \,\mathrm{d}S
+\end{equation*}
+\end{thm}
+
+\section{Curvilinear Coordinates}
+
+\subsection{Definitions}
+
+\begin{defn}
+    The \emph{Jacobian} $J(x_u)$ is given by
+    \begin{equation*}
+        J(x_u) =
+        \begin{pmatrix}
+            \partial x_1 / \partial u_1 & \partial x_1 / \partial u_2 & \partial x_1 / \partial u_3 \\
+            \partial x_2 / \partial u_1 & \partial x_2 / \partial u_2 & \partial x_2 / \partial u_3 \\
+            \partial x_3 / \partial u_1 & \partial x_3 / \partial u_2 & \partial x_3 / \partial u_3
+        \end{pmatrix}
+    \end{equation*}
+\end{defn}
+    
+\noindent If $\frac{\partial \vecr}{\partial u_1}$, $\frac{\partial \vecr}{\partial u_2}$, $\frac{\partial \vecr}{\partial u_3}$ are orthogonal, then $(u_1, u_2, u_3)$ is said to be an \emph{orthogonal curvilinear coordinate system}.
+
+\begin{defn}
+     The \emph{length scales} are given by $h_i = \lvert \frac{\partial \vecr}{\partial u_i} \rvert$.
+\end{defn}
+\begin{align*}
+    \bhat{a}_i &= \frac{\nabla u_i}{\lvert \nabla u_i \rvert} \\
+    \bhat{e}_i &= \frac{1}{h_i} \frac{\partial \vecr}{\partial u_i}
+\end{align*}
+For an orthogonal system, $\bhat{e}_i = \bhat{a}_i$.
+
+\subsection{Path Element}
+
+\begin{align*}
+    \mathrm{d}\vecr &= h_1 \mathrm{d}u_1 \,\bhat{e}_1 + h_2 \mathrm{d}u_2 \,\bhat{e}_2 + h_3 \mathrm{d}u_3 \,\bhat{e}_3 \\
+    \mathrm{d}s &= \sqrt{h_1^2 (\mathrm{d}u_1)^2 + h_2^2 (\mathrm{d}u_2)^2 + h_3^2 (\mathrm{d}u_3)^2}
+\end{align*}
+
+\subsection{Volume Element}
+
+\begin{equation*}
+    \mathrm{d}\tau = h_1 h_2 h_3 \,\mathrm{d}u_1 \mathrm{d}u_2 \mathrm{d}u_3
+\end{equation*}
+
+\subsection{Surface Element}
+
+\begin{equation*}
+    \mathrm{d}S = h_2 h_3 \,\mathrm{d}u_2 \mathrm{d}u_3
+\end{equation*}
+
+\subsection{Gradient}
+
+\begin{equation*}
+    \nabla \Phi = \frac{1}{h_1} \frac{\partial \Phi}{\partial u_1} \bhat{e}_1 + \frac{1}{h_2} \frac{\partial \Phi}{\partial u_2} \bhat{e}_2 + \frac{1}{h_3} \frac{\partial \Phi}{\partial u_3} \bhat{e}_3
+\end{equation*}
+
+\subsection{Divergence}
+
+\begin{equation*}
+    \vdiv \vecA
+    = \frac{1}{h_1 h_2 h_3} \left\{
+    \frac{\partial}{\partial u_1} (A_1 h_2 h_3)
+    + \frac{\partial}{\partial u_2} (A_2 h_3 h_1)
+    + \frac{\partial}{\partial u_3} (A_3 h_1 h_2)
+    \right\}
+\end{equation*}
+
+\subsection{Curl}
+
+\begin{equation*}
+    \vcurl \vecA = \frac{1}{h_1 h_2 h_3}
+    \begin{vmatrix}
+        h_1 \bhat{e}_1 & h_2 \bhat{e}_2 & h_3 \bhat{e}_3 \\
+        \partial / \partial u_1 & \partial / \partial u_2 & \partial / \partial u_3 \\
+        h_1 A_1 & h_2 A_2 & h_3 A_3
+    \end{vmatrix}
+\end{equation*}
+
+\subsection{Laplacian}
+
+\begin{equation*}
+    \nabla^2 \Phi
+    = \frac{1}{h_1 h_2 h_3} \left\{
+    \frac{\partial}{\partial u_1} \left(h_2 h_3 \frac{1}{h_1} \frac{\partial \Phi}{\partial u_1}\right)
+    + \frac{\partial}{\partial u_2} \left(h_3 h_1 \frac{1}{h_2} \frac{\partial \Phi}{\partial u_2}\right)
+    + \frac{\partial}{\partial u_3} \left(h_1 h_2 \frac{1}{h_3} \frac{\partial \Phi}{\partial u_3}\right)
+    \right\}
+\end{equation*}
+
+\subsection{Cylindrical Polar Coordinates $(r, \phi, z)$}
+
+Relation to Cartesian coordinates: $x = r \cos \phi, y = r \sin \phi, z = z$.
+
+\noindent Derivatives:
+\begin{align*}
+    \frac{\partial \vecr}{\partial r} &= \cos \phi \,\ihat + \sin \phi \,\jhat \\
+    \frac{\partial \vecr}{\partial \phi} &= -r \sin \phi \,\ihat + r \cos \phi \,\jhat \\
+    \frac{\partial \vecr}{\partial z} &= \khat
+\end{align*}
+
+\noindent Length scales: $h_1 = 1, h_2 = r, h_3 = 1$.
+
+\noindent Gradient:
+\begin{equation*}
+    \nabla = \bhat{r} \frac{\partial}{\partial r} + \frac{\bhat{\phi}}{r} \frac{\partial}{\partial \phi} + \khat \frac{\partial}{\partial z}
+\end{equation*}
+
+\noindent Divergence:
+\begin{equation*}
+    \vdiv \vecA = \frac{\partial A_1}{\partial r} + \frac{A_1}{r} + \frac{1}{r} \frac{\partial A_2}{\partial \phi} + \frac{\partial A_3}{\partial z}
+\end{equation*}
+
+\noindent Curl:
+\begin{equation*}
+    \vcurl \vecA = \frac{1}{r}
+    \begin{vmatrix}
+        \bhat{r} & r \bhat{\phi} & \khat \\
+        \partial / \partial r & \partial / \partial \phi & \partial / \partial z \\
+        A_1 & r A_2 & A_3
+    \end{vmatrix}
+\end{equation*}
+
+\noindent Laplacian:
+\begin{equation*}
+    \nabla^2 \Phi = \frac{\partial^2 \Phi}{\partial r^2} + \frac{1}{r} \frac{\partial \Phi}{\partial r} + \frac{1}{r^2} \frac{\partial^2 \Phi}{\partial \phi^2} + \frac{\partial^2 \Phi}{\partial z^2}
+\end{equation*}
+
+\subsection{Spherical Polar Coordinates $(r, \theta, \phi)$}
+
+Relation to Cartesian coordinates: $x = r \sin \theta \cos \phi, y = r \sin \theta \sin \phi, z = r \cos \theta$.
+
+\noindent Derivatives:
+\begin{align*}
+    \frac{\partial \vecr}{\partial r} &= \sin \theta \cos \phi \,\ihat + \sin \theta \sin \phi \,\jhat + \cos \theta \,\khat \\
+    \frac{\partial \vecr}{\partial \theta} &= r \cos \theta \cos \phi \,\ihat + r \cos \theta \sin \phi \,\jhat - r \sin \theta \,\khat \\
+    \frac{\partial \vecr}{\partial \phi} &= -r \sin \theta \sin \phi \,\ihat + r \sin \theta \cos \phi \,\jhat
+\end{align*}
+
+\noindent Length scales: $h_1 = 1, h_2 = r, h_3 = r \sin \theta$
+
+\noindent Gradient:
+\begin{equation*}
+    \nabla = \bhat{r} \frac{\partial}{\partial r} + \frac{\bhat{\theta}}{r} \frac{\partial}{\partial \theta} + \frac{\bhat{\phi}}{r \sin \theta} \frac{\partial}{\partial \phi}
+\end{equation*}
+
+\noindent Divergence:
+\begin{equation*}
+    \vdiv \vecA = \frac{1}{r^2 \sin \theta} \left\{ \frac{\partial}{\partial r} (r^2 \sin \theta A_1) + \frac{\partial}{\partial \theta} (r \sin \theta A_2) + \frac{\partial}{\partial \phi} (r A_3) \right\}
+\end{equation*}
+
+\noindent Curl:
+\begin{equation*}
+    \vcurl \vecA = \frac{1}{r^2 \sin \theta}
+    \begin{vmatrix}
+        \bhat{r} & r \bhat{\theta} & r \sin \theta \bhat{\phi} \\
+        \partial / \partial r & \partial / \partial \theta & \partial / \partial \phi \\
+        A_1 & r A_2 & r \sin \theta A_3
+    \end{vmatrix}
+\end{equation*}
+
+\noindent Laplacian:
+\begin{equation*}
+    \nabla^2 \Phi = \frac{\partial^2 \Phi}{\partial r^2} + \frac{2}{r} \frac{\partial \Phi}{\partial r} + \frac{\cot \theta}{r^2} \frac{\partial \Phi}{\partial \theta} + \frac{1}{r^2} \frac{\partial^2 \Phi}{\partial \theta^2} + \frac{1}{r^2 \sin^2 \theta} \frac{\partial^2 \Phi}{\partial \phi^2}
+\end{equation*}
+
+\section{Change of Variables in Surface Integration}
+Suppose the surface $S$ is parameterized by $u_1$, $u_2$. Then on $S$, $x = x(u_1, u_2)$, $y = y(u_1, u_2)$, $z = z(u_1, u_2)$. Then $\mathrm{d}S = \lvert \mathbf{J} \rvert \mathrm{d}u_1 \mathrm{d}u_2$, where $\mathrm{J} = \frac{\partial \vecr}{\partial u_1} \times \frac{\partial \vecr}{\partial u_2}$. Thus
+\begin{equation*}
+    \int_S f(x, y, z) \,\mathrm{d}S = \int_S F(u_1, u_2) \lvert \mathbf{J} \rvert \,\mathrm{d}u_1 \mathrm{d}u_2
+\end{equation*}
+where $F(u_1, u_2) = f(x(u_1, u_2), y(u_1, u_2), z(u_1, u_2))$.
+
+\section{Calculus of Variations}
+
+\subsection{Euler-Lagrange in 1D}
+
+Suppose we want to find a curve $y(x)$ which extremizes
+\begin{equation*}
+    I = \int_{x_1}^{x_2} L(x, y, y') \,\mathrm{d}x
+\end{equation*}
+Then $y$ must satisfy
+\begin{equation*}
+    \frac{\partial L}{\partial y} - \frac{\mathrm{d}}{\mathrm{d}x} \left( \frac{\partial L}{\partial y'} \right) = 0
+\end{equation*}
+
+\noindent If $L=L(x, y')$ is independent of $y$, this reduces to
+\begin{equation*}
+    \frac{\partial L}{\partial y'} = C
+\end{equation*}
+
+\noindent If $L=L(x, y)$ is independent of $y'$, this reduces to
+\begin{equation*}
+    \frac{\partial L}{\partial y} = 0
+\end{equation*}
+
+\noindent If $L=L(y, y')$ is independent of $x$, this reduces to
+\begin{equation*}
+    L - y' \frac{\partial L}{\partial y'} = C
+\end{equation*}
+
+\subsection{Euler-Lagrange in Higher Dimensions}
+
+\begin{equation*}
+    I = \int_{t_1}^{t_2} L(t, x_1(t), \ldots, x_n(t), x'_1(t), \ldots x'_n(t)) \,\mathrm{d}t
+\end{equation*}
+
+Then for each $1 \le i \le n$,
+\begin{equation*}
+    \frac{\partial L}{\partial x_i} - \frac{\mathrm{d}}{\mathrm{d}t} \frac{\partial L}{\partial x'_i} = 0
+\end{equation*}
+
+\subsection{Euler-Lagrange with Constraints in 1D}
+
+Suppose we want to find a curve $y(x)$ which satisfies $y(x_1) = y_1$, $y(x_2) = y_2$, such that
+\begin{equation*}
+    I = \int_{x_1}^{x_2} L(x, y, y') \,\mathrm{d}x
+\end{equation*}
+is stationary, subject to the constraint that
+\begin{equation*}
+    J = \int_{x_1}^{x_2} g(x, y, y') \,\mathrm{d}x
+\end{equation*}
+is a constant $J_0$.
+
+We first solve
+\begin{equation*}
+    \frac{\partial}{\partial y}(L + \lambda g) - \frac{\mathrm{d}}{\mathrm{d}x} \left( \frac{\partial}{\partial y'}(L + \lambda g) \right) = 0
+\end{equation*}
+for $y$ in terms of $\lambda$, using the boundary conditions, then substitute $y$ in $J$ to solve for $\lambda$.
+
+\subsection{Euler-Lagrange with Constraints in Higher Dimensions}
+
+To extremize the integral
+\begin{equation*}
+    I = \int_{t_1}^{t_2} L(t, \mathbf{x}(t), \mathbf{x}'(t)) \,\mathrm{d}t
+\end{equation*} 
+subject to the constraint
+\begin{equation*}
+    J = \int_{t_1}^{t_2} g(t, \mathbf{x}(t), \mathbf{x}'(t)) \,\mathrm{d}t = J_0
+\end{equation*}
+we follow the same steps as in the previous section, except with the system
+\begin{equation*}
+    \frac{\partial}{\partial x_i}(L + \lambda g) - \frac{\mathrm{d}}{\mathrm{d}t} \left( \frac{\partial}{\partial x_i'}(L + \lambda g) \right) = 0
+\end{equation*}
+for $1 \le i \le n$.
+
+\end{document}
